@@ -5,29 +5,29 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .text         00001864  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         0000001e  00802000  00001864  000018f8  2**0
+  1 .data         00000024  00802000  00001864  000018f8  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          000000a5  0080201e  0080201e  00001916  2**0
+  2 .bss          000000a5  00802024  00802024  0000191c  2**0
                   ALLOC
-  3 .comment      0000005c  00000000  00000000  00001916  2**0
+  3 .comment      0000005c  00000000  00000000  0000191c  2**0
                   CONTENTS, READONLY
-  4 .debug_aranges 000001c8  00000000  00000000  00001972  2**0
+  4 .debug_aranges 000001c8  00000000  00000000  00001978  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00005674  00000000  00000000  00001b3a  2**0
+  5 .debug_info   00005674  00000000  00000000  00001b40  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000f01  00000000  00000000  000071ae  2**0
+  6 .debug_abbrev 00000f01  00000000  00000000  000071b4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   0000425c  00000000  00000000  000080af  2**0
+  7 .debug_line   0000425c  00000000  00000000  000080b5  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000528  00000000  00000000  0000c30c  2**2
+  8 .debug_frame  00000528  00000000  00000000  0000c314  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00028add  00000000  00000000  0000c834  2**0
+  9 .debug_str    00028add  00000000  00000000  0000c83c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00001e98  00000000  00000000  00035311  2**0
+ 10 .debug_loc    00001e98  00000000  00000000  00035319  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000178  00000000  00000000  000371a9  2**0
+ 11 .debug_ranges 00000178  00000000  00000000  000371b1  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  0000a45f  00000000  00000000  00037321  2**0
+ 12 .debug_macro  0000a45f  00000000  00000000  00037329  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -309,14 +309,14 @@ Disassembly of section .text:
      21a:	02 c0       	rjmp	.+4      	; 0x220 <__do_copy_data+0x14>
      21c:	07 90       	elpm	r0, Z+
      21e:	0d 92       	st	X+, r0
-     220:	ae 31       	cpi	r26, 0x1E	; 30
+     220:	a4 32       	cpi	r26, 0x24	; 36
      222:	b1 07       	cpc	r27, r17
      224:	d9 f7       	brne	.-10     	; 0x21c <__do_copy_data+0x10>
      226:	1b be       	out	0x3b, r1	; 59
 
 00000228 <__do_clear_bss>:
      228:	20 e2       	ldi	r18, 0x20	; 32
-     22a:	ae e1       	ldi	r26, 0x1E	; 30
+     22a:	a4 e2       	ldi	r26, 0x24	; 36
      22c:	b0 e2       	ldi	r27, 0x20	; 32
      22e:	01 c0       	rjmp	.+2      	; 0x232 <.do_clear_bss_start>
 
@@ -324,7 +324,7 @@ Disassembly of section .text:
      230:	1d 92       	st	X+, r1
 
 00000232 <.do_clear_bss_start>:
-     232:	a3 3c       	cpi	r26, 0xC3	; 195
+     232:	a9 3c       	cpi	r26, 0xC9	; 201
      234:	b2 07       	cpc	r27, r18
      236:	e1 f7       	brne	.-8      	; 0x230 <.do_clear_bss_loop>
      238:	aa d5       	rcall	.+2900   	; 0xd8e <main>
@@ -334,12 +334,6 @@ Disassembly of section .text:
      23e:	e0 ce       	rjmp	.-576    	; 0x0 <__vectors>
 
 00000240 <usart_putchar>:
-
-	if (baud_offset != USART_BAUD_UNDEFINED) {
-		(usart)->BAUDCTRLB = (uint8_t)((uint16_t)baudctrl);
-		(usart)->BAUDCTRLA = (uint8_t)((uint16_t)baudctrl >> 8);
-	}
-}
      240:	fc 01       	movw	r30, r24
      242:	81 81       	ldd	r24, Z+1	; 0x01
      244:	85 ff       	sbrs	r24, 5
@@ -350,12 +344,6 @@ Disassembly of section .text:
      24e:	08 95       	ret
 
 00000250 <usart_set_baudrate>:
- * \retval true if the hardware supports the baud rate
- * \retval false if the hardware does not support the baud rate (i.e. it's
- *               either too high or too low.)
- */
-bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
-{
      250:	4f 92       	push	r4
      252:	5f 92       	push	r5
      254:	6f 92       	push	r6
@@ -377,12 +365,6 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
      274:	5b 01       	movw	r10, r22
      276:	28 01       	movw	r4, r16
      278:	39 01       	movw	r6, r18
-
-	/*
-	 * Check if the hardware supports the given baud rate
-	 */
-	/* 8 = (2^0) * 8 * (2^0) = (2^BSCALE_MIN) * 8 * (BSEL_MIN) */
-	max_rate = cpu_hz / 8;
      27a:	d9 01       	movw	r26, r18
      27c:	c8 01       	movw	r24, r16
      27e:	68 94       	set
@@ -393,8 +375,6 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
      288:	87 95       	ror	r24
      28a:	16 94       	lsr	r1
      28c:	d1 f7       	brne	.-12     	; 0x282 <usart_set_baudrate+0x32>
-	/* 4194304 = (2^7) * 8 * (2^12) = (2^BSCALE_MAX) * 8 * (BSEL_MAX+1) */
-	min_rate = cpu_hz / 4194304;
      28e:	b9 01       	movw	r22, r18
      290:	a8 01       	movw	r20, r16
      292:	03 2e       	mov	r0, r19
@@ -406,24 +386,17 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
      29e:	3a 95       	dec	r19
      2a0:	d1 f7       	brne	.-12     	; 0x296 <usart_set_baudrate+0x46>
      2a2:	30 2d       	mov	r19, r0
-
-	if (!((usart)->CTRLB & USART_CLK2X_bm)) {
      2a4:	2c 81       	ldd	r18, Y+4	; 0x04
      2a6:	22 fd       	sbrc	r18, 2
      2a8:	08 c0       	rjmp	.+16     	; 0x2ba <usart_set_baudrate+0x6a>
-		max_rate /= 2;
      2aa:	b6 95       	lsr	r27
      2ac:	a7 95       	ror	r26
      2ae:	97 95       	ror	r25
      2b0:	87 95       	ror	r24
-		min_rate /= 2;
      2b2:	76 95       	lsr	r23
      2b4:	67 95       	ror	r22
      2b6:	57 95       	ror	r21
      2b8:	47 95       	ror	r20
-	}
-
-	if ((baud > max_rate) || (baud < min_rate)) {
      2ba:	88 15       	cp	r24, r8
      2bc:	99 05       	cpc	r25, r9
      2be:	aa 05       	cpc	r26, r10
@@ -436,100 +409,52 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
      2cc:	b7 06       	cpc	r11, r23
      2ce:	08 f4       	brcc	.+2      	; 0x2d2 <usart_set_baudrate+0x82>
      2d0:	9e c0       	rjmp	.+316    	; 0x40e <usart_set_baudrate+0x1be>
-		return false;
-	}
-
-	/* Check if double speed is enabled. */
-	if (!((usart)->CTRLB & USART_CLK2X_bm)) {
      2d2:	8c 81       	ldd	r24, Y+4	; 0x04
      2d4:	82 fd       	sbrc	r24, 2
      2d6:	04 c0       	rjmp	.+8      	; 0x2e0 <usart_set_baudrate+0x90>
-		baud *= 2;
      2d8:	88 0c       	add	r8, r8
      2da:	99 1c       	adc	r9, r9
      2dc:	aa 1c       	adc	r10, r10
      2de:	bb 1c       	adc	r11, r11
-	}
-
-	/* Find the lowest possible exponent. */
-	limit = 0xfffU >> 4;
-	ratio = cpu_hz / baud;
      2e0:	c3 01       	movw	r24, r6
      2e2:	b2 01       	movw	r22, r4
      2e4:	a5 01       	movw	r20, r10
      2e6:	94 01       	movw	r18, r8
      2e8:	e3 d7       	rcall	.+4038   	; 0x12b0 <__udivmodsi4>
-
-	for (exp = -7; exp < 7; exp++) {
-		if (ratio < limit) {
      2ea:	2f 3f       	cpi	r18, 0xFF	; 255
      2ec:	31 05       	cpc	r19, r1
      2ee:	41 05       	cpc	r20, r1
      2f0:	51 05       	cpc	r21, r1
      2f2:	08 f4       	brcc	.+2      	; 0x2f6 <usart_set_baudrate+0xa6>
      2f4:	8e c0       	rjmp	.+284    	; 0x412 <usart_set_baudrate+0x1c2>
-	if (!((usart)->CTRLB & USART_CLK2X_bm)) {
-		baud *= 2;
-	}
-
-	/* Find the lowest possible exponent. */
-	limit = 0xfffU >> 4;
      2f6:	c1 2c       	mov	r12, r1
      2f8:	d1 2c       	mov	r13, r1
      2fa:	76 01       	movw	r14, r12
      2fc:	ca 94       	dec	r12
-	ratio = cpu_hz / baud;
-
-	for (exp = -7; exp < 7; exp++) {
      2fe:	19 ef       	ldi	r17, 0xF9	; 249
      300:	05 c0       	rjmp	.+10     	; 0x30c <usart_set_baudrate+0xbc>
-		if (ratio < limit) {
      302:	2c 15       	cp	r18, r12
      304:	3d 05       	cpc	r19, r13
      306:	4e 05       	cpc	r20, r14
      308:	5f 05       	cpc	r21, r15
      30a:	68 f0       	brcs	.+26     	; 0x326 <usart_set_baudrate+0xd6>
-			break;
-		}
-
-		limit <<= 1;
      30c:	cc 0c       	add	r12, r12
      30e:	dd 1c       	adc	r13, r13
      310:	ee 1c       	adc	r14, r14
      312:	ff 1c       	adc	r15, r15
-
-		if (exp < -3) {
      314:	1d 3f       	cpi	r17, 0xFD	; 253
      316:	14 f4       	brge	.+4      	; 0x31c <usart_set_baudrate+0xcc>
-			limit |= 1;
      318:	68 94       	set
      31a:	c0 f8       	bld	r12, 0
-
-	/* Find the lowest possible exponent. */
-	limit = 0xfffU >> 4;
-	ratio = cpu_hz / baud;
-
-	for (exp = -7; exp < 7; exp++) {
      31c:	1f 5f       	subi	r17, 0xFF	; 255
      31e:	17 30       	cpi	r17, 0x07	; 7
      320:	81 f7       	brne	.-32     	; 0x302 <usart_set_baudrate+0xb2>
      322:	21 2f       	mov	r18, r17
      324:	4e c0       	rjmp	.+156    	; 0x3c2 <usart_set_baudrate+0x172>
      326:	21 2f       	mov	r18, r17
-	 * point.
-	 *
-	 * The formula for calculating BSEL is slightly different when exp is
-	 * negative than it is when exp is positive.
-	 */
-	if (exp < 0) {
      328:	11 23       	and	r17, r17
      32a:	0c f0       	brlt	.+2      	; 0x32e <usart_set_baudrate+0xde>
      32c:	4a c0       	rjmp	.+148    	; 0x3c2 <usart_set_baudrate+0x172>
-		/* We are supposed to subtract 1, then apply BSCALE. We want to
-		 * apply BSCALE first, so we need to turn everything inside the
-		 * parenthesis into a single fractional expression.
-		 */
-		cpu_hz -= 8 * baud;
      32e:	d5 01       	movw	r26, r10
      330:	c4 01       	movw	r24, r8
      332:	88 0f       	add	r24, r24
@@ -548,15 +473,8 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
      34c:	59 0a       	sbc	r5, r25
      34e:	6a 0a       	sbc	r6, r26
      350:	7b 0a       	sbc	r7, r27
-		/* If we end up with a left-shift after taking the final
-		 * divide-by-8 into account, do the shift before the divide.
-		 * Otherwise, left-shift the denominator instead (effectively
-		 * resulting in an overall right shift.)
-		 */
-		if (exp <= -3) {
      352:	1e 3f       	cpi	r17, 0xFE	; 254
      354:	ec f4       	brge	.+58     	; 0x390 <usart_set_baudrate+0x140>
-			div = ((cpu_hz << (-exp - 3)) + baud / 2) / baud;
      356:	6d ef       	ldi	r22, 0xFD	; 253
      358:	7f ef       	ldi	r23, 0xFF	; 255
      35a:	61 1b       	sub	r22, r17
@@ -586,8 +504,6 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
      38a:	94 01       	movw	r18, r8
      38c:	91 d7       	rcall	.+3874   	; 0x12b0 <__udivmodsi4>
      38e:	34 c0       	rjmp	.+104    	; 0x3f8 <usart_set_baudrate+0x1a8>
-		} else {
-			baud <<= exp + 3;
      390:	23 e0       	ldi	r18, 0x03	; 3
      392:	21 0f       	add	r18, r17
      394:	d5 01       	movw	r26, r10
@@ -601,7 +517,6 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
      3a4:	d2 f7       	brpl	.-12     	; 0x39a <usart_set_baudrate+0x14a>
      3a6:	9c 01       	movw	r18, r24
      3a8:	ad 01       	movw	r20, r26
-			div = (cpu_hz + baud / 2) / baud;
      3aa:	b6 95       	lsr	r27
      3ac:	a7 95       	ror	r26
      3ae:	97 95       	ror	r25
@@ -614,12 +529,6 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
      3bc:	97 1d       	adc	r25, r7
      3be:	78 d7       	rcall	.+3824   	; 0x12b0 <__udivmodsi4>
      3c0:	1b c0       	rjmp	.+54     	; 0x3f8 <usart_set_baudrate+0x1a8>
-		}
-	} else {
-		/* We will always do a right shift in this case, but we need to
-		 * shift three extra positions because of the divide-by-8.
-		 */
-		baud <<= exp + 3;
      3c2:	2d 5f       	subi	r18, 0xFD	; 253
      3c4:	d5 01       	movw	r26, r10
      3c6:	c4 01       	movw	r24, r8
@@ -632,7 +541,6 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
      3d4:	d2 f7       	brpl	.-12     	; 0x3ca <usart_set_baudrate+0x17a>
      3d6:	9c 01       	movw	r18, r24
      3d8:	ad 01       	movw	r20, r26
-		div = (cpu_hz + baud / 2) / baud - 1;
      3da:	b6 95       	lsr	r27
      3dc:	a7 95       	ror	r26
      3de:	97 95       	ror	r25
@@ -648,37 +556,19 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
      3f2:	31 09       	sbc	r19, r1
      3f4:	41 09       	sbc	r20, r1
      3f6:	51 09       	sbc	r21, r1
-	}
-
-	(usart)->BAUDCTRLB = (uint8_t)(((div >> 8) & 0X0F) | (exp << 4));
      3f8:	83 2f       	mov	r24, r19
      3fa:	8f 70       	andi	r24, 0x0F	; 15
      3fc:	12 95       	swap	r17
      3fe:	10 7f       	andi	r17, 0xF0	; 240
      400:	18 2b       	or	r17, r24
      402:	1f 83       	std	Y+7, r17	; 0x07
-	(usart)->BAUDCTRLA = (uint8_t)div;
      404:	2e 83       	std	Y+6, r18	; 0x06
-
-	return true;
      406:	81 e0       	ldi	r24, 0x01	; 1
      408:	18 c0       	rjmp	.+48     	; 0x43a <usart_set_baudrate+0x1ea>
-		max_rate /= 2;
-		min_rate /= 2;
-	}
-
-	if ((baud > max_rate) || (baud < min_rate)) {
-		return false;
      40a:	80 e0       	ldi	r24, 0x00	; 0
      40c:	16 c0       	rjmp	.+44     	; 0x43a <usart_set_baudrate+0x1ea>
      40e:	80 e0       	ldi	r24, 0x00	; 0
      410:	14 c0       	rjmp	.+40     	; 0x43a <usart_set_baudrate+0x1ea>
-	if (exp < 0) {
-		/* We are supposed to subtract 1, then apply BSCALE. We want to
-		 * apply BSCALE first, so we need to turn everything inside the
-		 * parenthesis into a single fractional expression.
-		 */
-		cpu_hz -= 8 * baud;
      412:	d5 01       	movw	r26, r10
      414:	c4 01       	movw	r24, r8
      416:	88 0f       	add	r24, r24
@@ -697,20 +587,8 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
      430:	59 0a       	sbc	r5, r25
      432:	6a 0a       	sbc	r6, r26
      434:	7b 0a       	sbc	r7, r27
-
-	/* Find the lowest possible exponent. */
-	limit = 0xfffU >> 4;
-	ratio = cpu_hz / baud;
-
-	for (exp = -7; exp < 7; exp++) {
      436:	19 ef       	ldi	r17, 0xF9	; 249
      438:	8e cf       	rjmp	.-228    	; 0x356 <usart_set_baudrate+0x106>
-
-	(usart)->BAUDCTRLB = (uint8_t)(((div >> 8) & 0X0F) | (exp << 4));
-	(usart)->BAUDCTRLA = (uint8_t)div;
-
-	return true;
-}
      43a:	df 91       	pop	r29
      43c:	cf 91       	pop	r28
      43e:	1f 91       	pop	r17
@@ -745,10 +623,10 @@ void UART_SEND(int l)
      464:	18 16       	cp	r1, r24
      466:	19 06       	cpc	r1, r25
      468:	64 f4       	brge	.+24     	; 0x482 <UART_SEND+0x26>
-     46a:	cf e1       	ldi	r28, 0x1F	; 31
+     46a:	c5 e2       	ldi	r28, 0x25	; 37
      46c:	d0 e2       	ldi	r29, 0x20	; 32
      46e:	8c 01       	movw	r16, r24
-     470:	01 5e       	subi	r16, 0xE1	; 225
+     470:	0b 5d       	subi	r16, 0xDB	; 219
      472:	1f 4d       	sbci	r17, 0xDF	; 223
 	usart_putchar(&USARTE0,buffer[i]);
      474:	69 91       	ld	r22, Y+
@@ -1254,17 +1132,17 @@ void calculate(unsigned int C1,unsigned int C2,unsigned int C3,unsigned int C4,u
      7fc:	61 f4       	brne	.+24     	; 0x816 <calculate+0x38a>
   	{
   		pres[0]=pres[1];
-     7fe:	c0 92 85 20 	sts	0x2085, r12
-     802:	d0 92 86 20 	sts	0x2086, r13
-     806:	e0 92 87 20 	sts	0x2087, r14
-     80a:	f0 92 88 20 	sts	0x2088, r15
+     7fe:	c0 92 8b 20 	sts	0x208B, r12
+     802:	d0 92 8c 20 	sts	0x208C, r13
+     806:	e0 92 8d 20 	sts	0x208D, r14
+     80a:	f0 92 8e 20 	sts	0x208E, r15
   		flag=0;
      80e:	10 92 00 20 	sts	0x2000, r1
      812:	10 92 01 20 	sts	0x2001, r1
   	}
   	
    	pres[1]=pres[0]+(0.025/(float)(0.025+1/(float)(2*(float)(3.14)*6)))*(pres[1]-pres[0]);    //filter
-     816:	05 e8       	ldi	r16, 0x85	; 133
+     816:	0b e8       	ldi	r16, 0x8B	; 139
      818:	10 e2       	ldi	r17, 0x20	; 32
      81a:	d8 01       	movw	r26, r16
      81c:	8d 90       	ld	r8, X+
@@ -1286,10 +1164,10 @@ void calculate(unsigned int C1,unsigned int C2,unsigned int C3,unsigned int C4,u
      83c:	c5 01       	movw	r24, r10
      83e:	b4 01       	movw	r22, r8
      840:	21 d3       	rcall	.+1602   	; 0xe84 <__addsf3>
-     842:	60 93 89 20 	sts	0x2089, r22
-     846:	70 93 8a 20 	sts	0x208A, r23
-     84a:	80 93 8b 20 	sts	0x208B, r24
-     84e:	90 93 8c 20 	sts	0x208C, r25
+     842:	60 93 8f 20 	sts	0x208F, r22
+     846:	70 93 90 20 	sts	0x2090, r23
+     84a:	80 93 91 20 	sts	0x2091, r24
+     84e:	90 93 92 20 	sts	0x2092, r25
    	pres[0]=pres[1];
      852:	f8 01       	movw	r30, r16
      854:	60 83       	st	Z, r22
@@ -1306,7 +1184,7 @@ void calculate(unsigned int C1,unsigned int C2,unsigned int C3,unsigned int C4,u
      866:	90 e2       	ldi	r25, 0x20	; 32
      868:	9f 93       	push	r25
      86a:	8f 93       	push	r24
-     86c:	0f e1       	ldi	r16, 0x1F	; 31
+     86c:	05 e2       	ldi	r16, 0x25	; 37
      86e:	10 e2       	ldi	r17, 0x20	; 32
      870:	1f 93       	push	r17
      872:	0f 93       	push	r16
@@ -1330,7 +1208,7 @@ void calculate(unsigned int C1,unsigned int C2,unsigned int C3,unsigned int C4,u
 	 temperature=(long int)TEMP;
      892:	c8 d3       	rcall	.+1936   	; 0x1024 <__fixsfsi>
 	 //temperature=(long int)T2;
-	 printf2pc("temp: %ld",temperature);
+	 printf2pc("Temperature: %ld",temperature);
      894:	9f 93       	push	r25
      896:	8f 93       	push	r24
      898:	7f 93       	push	r23
@@ -1353,7 +1231,7 @@ void calculate(unsigned int C1,unsigned int C2,unsigned int C3,unsigned int C4,u
      8b6:	de bf       	out	0x3e, r29	; 62
 // 	  printf2pc("c5: %d",C5);
 // 	   printf2pc("d2: %ld",D2);
-// 	    usart_putchar(&USARTE0,'\r');
+
 	
 }
      8b8:	64 96       	adiw	r28, 0x14	; 20
@@ -1506,25 +1384,16 @@ static inline void usart_rx_enable(USART_t *usart)
      962:	08 95       	ret
 
 00000964 <reset>:
-#include "calculation.h"
-#include "MS5611.h"
-
-
- void reset(void)
- {
      964:	0f 93       	push	r16
-
-	 TWI_MasterWriteRead(&twiMaster,MS5607_ADD,&ms_reset,1,0);
      966:	00 e0       	ldi	r16, 0x00	; 0
      968:	21 e0       	ldi	r18, 0x01	; 1
      96a:	44 e0       	ldi	r20, 0x04	; 4
      96c:	50 e2       	ldi	r21, 0x20	; 32
      96e:	67 e7       	ldi	r22, 0x77	; 119
-     970:	8d e9       	ldi	r24, 0x9D	; 157
+     970:	83 ea       	ldi	r24, 0xA3	; 163
      972:	90 e2       	ldi	r25, 0x20	; 32
      974:	41 d1       	rcall	.+642    	; 0xbf8 <TWI_MasterWriteRead>
- 	 while (twiMaster.status != TWIM_STATUS_READY) {
-     976:	e4 eb       	ldi	r30, 0xB4	; 180
+     976:	ea eb       	ldi	r30, 0xBA	; 186
      978:	f0 e2       	ldi	r31, 0x20	; 32
      97a:	80 81       	ld	r24, Z
      97c:	81 11       	cpse	r24, r1
@@ -1541,24 +1410,12 @@ static inline void usart_rx_enable(USART_t *usart)
      986:	f1 f7       	brne	.-4      	; 0x984 <reset+0x20>
      988:	00 c0       	rjmp	.+0      	; 0x98a <reset+0x26>
      98a:	00 00       	nop
-      /* Wait until transaction is complete. */
-      }
-	 _delay_ms(3);
-	 PORTD_OUTSET=LED_White_PIN_bm;
      98c:	88 e0       	ldi	r24, 0x08	; 8
      98e:	80 93 65 06 	sts	0x0665, r24
-	
-	  
- }
      992:	0f 91       	pop	r16
      994:	08 95       	ret
 
 00000996 <read_PROM>:
-
-
- 
-   void read_PROM(void)
-   {
      996:	4f 92       	push	r4
      998:	5f 92       	push	r5
      99a:	6f 92       	push	r6
@@ -1574,93 +1431,68 @@ static inline void usart_rx_enable(USART_t *usart)
      9ae:	0f 93       	push	r16
      9b0:	cf 93       	push	r28
      9b2:	df 93       	push	r29
-   	 int i;
-   	 PROM_read=0xA2;
      9b4:	82 ea       	ldi	r24, 0xA2	; 162
      9b6:	80 93 03 20 	sts	0x2003, r24
      9ba:	0f 2e       	mov	r0, r31
-     9bc:	f1 e9       	ldi	r31, 0x91	; 145
+     9bc:	f7 e9       	ldi	r31, 0x97	; 151
      9be:	6f 2e       	mov	r6, r31
      9c0:	f0 e2       	ldi	r31, 0x20	; 32
      9c2:	7f 2e       	mov	r7, r31
      9c4:	f0 2d       	mov	r31, r0
      9c6:	0f 2e       	mov	r0, r31
-     9c8:	fd e9       	ldi	r31, 0x9D	; 157
+     9c8:	f3 ea       	ldi	r31, 0xA3	; 163
      9ca:	8f 2e       	mov	r8, r31
      9cc:	f0 e2       	ldi	r31, 0x20	; 32
      9ce:	9f 2e       	mov	r9, r31
      9d0:	f0 2d       	mov	r31, r0
-   	 
-   	 for(i=0;i<6;i++)
-   	 {
-   		  TWI_MasterWriteRead(&twiMaster,MS5607_ADD,&PROM_read,1,2);
-    		  while (twiMaster.status != TWIM_STATUS_READY) {
-     9d2:	c4 eb       	ldi	r28, 0xB4	; 180
+     9d2:	ca eb       	ldi	r28, 0xBA	; 186
      9d4:	d0 e2       	ldi	r29, 0x20	; 32
-    			  /* Wait until transaction is complete. */
-    		  }
-   		 PROM_read=PROM_read+2;
-		 c[0]=twiMaster.readData[0];
      9d6:	0f 2e       	mov	r0, r31
-     9d8:	f8 ea       	ldi	r31, 0xA8	; 168
+     9d8:	fe ea       	ldi	r31, 0xAE	; 174
      9da:	af 2e       	mov	r10, r31
      9dc:	f0 e2       	ldi	r31, 0x20	; 32
      9de:	bf 2e       	mov	r11, r31
      9e0:	f0 2d       	mov	r31, r0
      9e2:	0f 2e       	mov	r0, r31
-     9e4:	f6 eb       	ldi	r31, 0xB6	; 182
+     9e4:	fc eb       	ldi	r31, 0xBC	; 188
      9e6:	cf 2e       	mov	r12, r31
      9e8:	f0 e2       	ldi	r31, 0x20	; 32
      9ea:	df 2e       	mov	r13, r31
      9ec:	f0 2d       	mov	r31, r0
-		 c[1]=twiMaster.readData[1];	
      9ee:	0f 2e       	mov	r0, r31
-     9f0:	f9 ea       	ldi	r31, 0xA9	; 169
+     9f0:	ff ea       	ldi	r31, 0xAF	; 175
      9f2:	ef 2e       	mov	r14, r31
      9f4:	f0 e2       	ldi	r31, 0x20	; 32
      9f6:	ff 2e       	mov	r15, r31
      9f8:	f0 2d       	mov	r31, r0
      9fa:	0f 2e       	mov	r0, r31
-     9fc:	f7 eb       	ldi	r31, 0xB7	; 183
+     9fc:	fd eb       	ldi	r31, 0xBD	; 189
      9fe:	4f 2e       	mov	r4, r31
      a00:	f0 e2       	ldi	r31, 0x20	; 32
      a02:	5f 2e       	mov	r5, r31
      a04:	f0 2d       	mov	r31, r0
-   	 int i;
-   	 PROM_read=0xA2;
-   	 
-   	 for(i=0;i<6;i++)
-   	 {
-   		  TWI_MasterWriteRead(&twiMaster,MS5607_ADD,&PROM_read,1,2);
      a06:	02 e0       	ldi	r16, 0x02	; 2
      a08:	21 e0       	ldi	r18, 0x01	; 1
      a0a:	43 e0       	ldi	r20, 0x03	; 3
      a0c:	50 e2       	ldi	r21, 0x20	; 32
      a0e:	67 e7       	ldi	r22, 0x77	; 119
-     a10:	8d e9       	ldi	r24, 0x9D	; 157
+     a10:	83 ea       	ldi	r24, 0xA3	; 163
      a12:	90 e2       	ldi	r25, 0x20	; 32
      a14:	f1 d0       	rcall	.+482    	; 0xbf8 <TWI_MasterWriteRead>
-    		  while (twiMaster.status != TWIM_STATUS_READY) {
      a16:	88 81       	ld	r24, Y
      a18:	81 11       	cpse	r24, r1
      a1a:	fd cf       	rjmp	.-6      	; 0xa16 <read_PROM+0x80>
-    			  /* Wait until transaction is complete. */
-    		  }
-   		 PROM_read=PROM_read+2;
      a1c:	80 91 03 20 	lds	r24, 0x2003
      a20:	8e 5f       	subi	r24, 0xFE	; 254
      a22:	80 93 03 20 	sts	0x2003, r24
-		 c[0]=twiMaster.readData[0];
      a26:	f5 01       	movw	r30, r10
      a28:	80 81       	ld	r24, Z
      a2a:	f6 01       	movw	r30, r12
      a2c:	80 83       	st	Z, r24
-		 c[1]=twiMaster.readData[1];	
      a2e:	f7 01       	movw	r30, r14
      a30:	20 81       	ld	r18, Z
      a32:	f2 01       	movw	r30, r4
      a34:	20 83       	st	Z, r18
-   		 n[i]=(unsigned int)c[0]*256+(unsigned int)c[1];   //avali MSB
      a36:	90 e0       	ldi	r25, 0x00	; 0
      a38:	98 2f       	mov	r25, r24
      a3a:	88 27       	eor	r24, r24
@@ -1670,21 +1502,9 @@ static inline void usart_rx_enable(USART_t *usart)
      a42:	81 93       	st	Z+, r24
      a44:	91 93       	st	Z+, r25
      a46:	3f 01       	movw	r6, r30
-   void read_PROM(void)
-   {
-   	 int i;
-   	 PROM_read=0xA2;
-   	 
-   	 for(i=0;i<6;i++)
      a48:	e8 15       	cp	r30, r8
      a4a:	f9 05       	cpc	r31, r9
      a4c:	e1 f6       	brne	.-72     	; 0xa06 <read_PROM+0x70>
-   		 n[i]=(unsigned int)c[0]*256+(unsigned int)c[1];   //avali MSB
-			
-   	 }
-
-  	 
-   }
      a4e:	df 91       	pop	r29
      a50:	cf 91       	pop	r28
      a52:	0f 91       	pop	r16
@@ -1703,10 +1523,6 @@ static inline void usart_rx_enable(USART_t *usart)
      a6c:	08 95       	ret
 
 00000a6e <D_read>:
-   
-   
-   void D_read(void)
-   {
      a6e:	2f 92       	push	r2
      a70:	3f 92       	push	r3
      a72:	4f 92       	push	r4
@@ -1724,83 +1540,60 @@ static inline void usart_rx_enable(USART_t *usart)
      a8a:	0f 93       	push	r16
      a8c:	cf 93       	push	r28
      a8e:	df 93       	push	r29
-  	 
-   	 int j=0,i;
-   	 read_d=0x48;
      a90:	88 e4       	ldi	r24, 0x48	; 72
      a92:	80 93 02 20 	sts	0x2002, r24
      a96:	0f 2e       	mov	r0, r31
-     a98:	fb eb       	ldi	r31, 0xBB	; 187
+     a98:	f1 ec       	ldi	r31, 0xC1	; 193
      a9a:	6f 2e       	mov	r6, r31
      a9c:	f0 e2       	ldi	r31, 0x20	; 32
      a9e:	7f 2e       	mov	r7, r31
      aa0:	f0 2d       	mov	r31, r0
      aa2:	0f 2e       	mov	r0, r31
-     aa4:	f3 ec       	ldi	r31, 0xC3	; 195
+     aa4:	f9 ec       	ldi	r31, 0xC9	; 201
      aa6:	8f 2e       	mov	r8, r31
      aa8:	f0 e2       	ldi	r31, 0x20	; 32
      aaa:	9f 2e       	mov	r9, r31
      aac:	f0 2d       	mov	r31, r0
-   	 
-   	 for(i=0;i<2;i++)
-   	 {
-   		  TWI_MasterWriteRead(&twiMaster,MS5607_ADD,&read_d,1,0);
-    		  while (twiMaster.status != TWIM_STATUS_READY) {    //ino mizaram gir mikone
-     aae:	c4 eb       	ldi	r28, 0xB4	; 180
+     aae:	ca eb       	ldi	r28, 0xBA	; 186
      ab0:	d0 e2       	ldi	r29, 0x20	; 32
-   		 TWI_MasterWriteRead(&twiMaster,MS5607_ADD,&ADC_read,1,3);
-    		 while (twiMaster.status != TWIM_STATUS_READY) {    //ino mizaram gir mikone
-    			 /* Wait until transaction is complete. */
-    		 }
-   		 read_d=read_d+16;
-		 d[0]=twiMaster.readData[0];
      ab2:	0f 2e       	mov	r0, r31
-     ab4:	f8 ea       	ldi	r31, 0xA8	; 168
+     ab4:	fe ea       	ldi	r31, 0xAE	; 174
      ab6:	af 2e       	mov	r10, r31
      ab8:	f0 e2       	ldi	r31, 0x20	; 32
      aba:	bf 2e       	mov	r11, r31
      abc:	f0 2d       	mov	r31, r0
      abe:	0f 2e       	mov	r0, r31
-     ac0:	f8 eb       	ldi	r31, 0xB8	; 184
+     ac0:	fe eb       	ldi	r31, 0xBE	; 190
      ac2:	cf 2e       	mov	r12, r31
      ac4:	f0 e2       	ldi	r31, 0x20	; 32
      ac6:	df 2e       	mov	r13, r31
      ac8:	f0 2d       	mov	r31, r0
-		 d[1]=twiMaster.readData[1];
      aca:	0f 2e       	mov	r0, r31
-     acc:	f9 ea       	ldi	r31, 0xA9	; 169
+     acc:	ff ea       	ldi	r31, 0xAF	; 175
      ace:	ef 2e       	mov	r14, r31
      ad0:	f0 e2       	ldi	r31, 0x20	; 32
      ad2:	ff 2e       	mov	r15, r31
      ad4:	f0 2d       	mov	r31, r0
      ad6:	0f 2e       	mov	r0, r31
-     ad8:	f9 eb       	ldi	r31, 0xB9	; 185
+     ad8:	ff eb       	ldi	r31, 0xBF	; 191
      ada:	4f 2e       	mov	r4, r31
      adc:	f0 e2       	ldi	r31, 0x20	; 32
      ade:	5f 2e       	mov	r5, r31
      ae0:	f0 2d       	mov	r31, r0
-		 d[2]=twiMaster.readData[2];
      ae2:	0f 2e       	mov	r0, r31
-     ae4:	fa ea       	ldi	r31, 0xAA	; 170
+     ae4:	f0 eb       	ldi	r31, 0xB0	; 176
      ae6:	2f 2e       	mov	r2, r31
      ae8:	f0 e2       	ldi	r31, 0x20	; 32
      aea:	3f 2e       	mov	r3, r31
      aec:	f0 2d       	mov	r31, r0
-   	 int j=0,i;
-   	 read_d=0x48;
-   	 
-   	 for(i=0;i<2;i++)
-   	 {
-   		  TWI_MasterWriteRead(&twiMaster,MS5607_ADD,&read_d,1,0);
      aee:	00 e0       	ldi	r16, 0x00	; 0
      af0:	21 e0       	ldi	r18, 0x01	; 1
      af2:	42 e0       	ldi	r20, 0x02	; 2
      af4:	50 e2       	ldi	r21, 0x20	; 32
      af6:	67 e7       	ldi	r22, 0x77	; 119
-     af8:	8d e9       	ldi	r24, 0x9D	; 157
+     af8:	83 ea       	ldi	r24, 0xA3	; 163
      afa:	90 e2       	ldi	r25, 0x20	; 32
      afc:	7d d0       	rcall	.+250    	; 0xbf8 <TWI_MasterWriteRead>
-    		  while (twiMaster.status != TWIM_STATUS_READY) {    //ino mizaram gir mikone
      afe:	88 81       	ld	r24, Y
      b00:	81 11       	cpse	r24, r1
      b02:	fd cf       	rjmp	.-6      	; 0xafe <D_read+0x90>
@@ -1813,46 +1606,33 @@ static inline void usart_rx_enable(USART_t *usart)
      b10:	e1 f7       	brne	.-8      	; 0xb0a <D_read+0x9c>
      b12:	00 c0       	rjmp	.+0      	; 0xb14 <D_read+0xa6>
      b14:	00 00       	nop
-    			  /* Wait until transaction is complete. */
-    		  }
-   		 _delay_ms(10);
-   		 TWI_MasterWriteRead(&twiMaster,MS5607_ADD,&ADC_read,1,3);
      b16:	03 e0       	ldi	r16, 0x03	; 3
      b18:	21 e0       	ldi	r18, 0x01	; 1
-     b1a:	4e e1       	ldi	r20, 0x1E	; 30
+     b1a:	44 e2       	ldi	r20, 0x24	; 36
      b1c:	50 e2       	ldi	r21, 0x20	; 32
      b1e:	67 e7       	ldi	r22, 0x77	; 119
-     b20:	8d e9       	ldi	r24, 0x9D	; 157
+     b20:	83 ea       	ldi	r24, 0xA3	; 163
      b22:	90 e2       	ldi	r25, 0x20	; 32
      b24:	69 d0       	rcall	.+210    	; 0xbf8 <TWI_MasterWriteRead>
-    		 while (twiMaster.status != TWIM_STATUS_READY) {    //ino mizaram gir mikone
      b26:	88 81       	ld	r24, Y
      b28:	81 11       	cpse	r24, r1
      b2a:	fd cf       	rjmp	.-6      	; 0xb26 <D_read+0xb8>
-    			 /* Wait until transaction is complete. */
-    		 }
-   		 read_d=read_d+16;
      b2c:	80 91 02 20 	lds	r24, 0x2002
      b30:	80 5f       	subi	r24, 0xF0	; 240
      b32:	80 93 02 20 	sts	0x2002, r24
-		 d[0]=twiMaster.readData[0];
      b36:	f5 01       	movw	r30, r10
      b38:	80 81       	ld	r24, Z
      b3a:	f6 01       	movw	r30, r12
      b3c:	80 83       	st	Z, r24
-		 d[1]=twiMaster.readData[1];
      b3e:	f7 01       	movw	r30, r14
      b40:	30 81       	ld	r19, Z
      b42:	f2 01       	movw	r30, r4
      b44:	30 83       	st	Z, r19
-		 d[2]=twiMaster.readData[2];
      b46:	f1 01       	movw	r30, r2
      b48:	20 81       	ld	r18, Z
-     b4a:	ea eb       	ldi	r30, 0xBA	; 186
+     b4a:	e0 ec       	ldi	r30, 0xC0	; 192
      b4c:	f0 e2       	ldi	r31, 0x20	; 32
      b4e:	20 83       	st	Z, r18
-		 	
-   		 m[i]=(unsigned long int)d[2]+(unsigned long int)d[1]*256+(unsigned long int)d[0]*65536;   
      b50:	90 e0       	ldi	r25, 0x00	; 0
      b52:	a0 e0       	ldi	r26, 0x00	; 0
      b54:	b0 e0       	ldi	r27, 0x00	; 0
@@ -1878,21 +1658,10 @@ static inline void usart_rx_enable(USART_t *usart)
      b7c:	a1 93       	st	Z+, r26
      b7e:	b1 93       	st	Z+, r27
      b80:	3f 01       	movw	r6, r30
-   {
-  	 
-   	 int j=0,i;
-   	 read_d=0x48;
-   	 
-   	 for(i=0;i<2;i++)
      b82:	e8 15       	cp	r30, r8
      b84:	f9 05       	cpc	r31, r9
      b86:	09 f0       	breq	.+2      	; 0xb8a <D_read+0x11c>
      b88:	b2 cf       	rjmp	.-156    	; 0xaee <D_read+0x80>
-   		 m[i]=(unsigned long int)d[2]+(unsigned long int)d[1]*256+(unsigned long int)d[0]*65536;   
-   	 }
-  
-  	 
-  
      b8a:	df 91       	pop	r29
      b8c:	cf 91       	pop	r28
      b8e:	0f 91       	pop	r16
@@ -1913,48 +1682,28 @@ static inline void usart_rx_enable(USART_t *usart)
      bac:	08 95       	ret
 
 00000bae <set_micro>:
-
-
-void set_micro(void)
-{
-
-En_RC32M();
      bae:	9a de       	rcall	.-716    	; 0x8e4 <En_RC32M>
-PMIC_CTRL |= PMIC_HILVLEN_bm | PMIC_LOLVLEN_bm |PMIC_MEDLVLEN_bm;
      bb0:	e2 ea       	ldi	r30, 0xA2	; 162
      bb2:	f0 e0       	ldi	r31, 0x00	; 0
      bb4:	80 81       	ld	r24, Z
      bb6:	87 60       	ori	r24, 0x07	; 7
      bb8:	80 83       	st	Z, r24
-PORT_init();
      bba:	a9 de       	rcall	.-686    	; 0x90e <PORT_init>
-USARTE0_init();
      bbc:	b2 de       	rcall	.-668    	; 0x922 <USARTE0_init>
-
-sei();
      bbe:	78 94       	sei
-
-TWI_MasterInit(&twiMaster,&TWID,TWI_MASTER_INTLVL_LO_gc,TWI_BAUDSETTING);	
      bc0:	2b e9       	ldi	r18, 0x9B	; 155
      bc2:	40 e4       	ldi	r20, 0x40	; 64
      bc4:	60 e9       	ldi	r22, 0x90	; 144
      bc6:	74 e0       	ldi	r23, 0x04	; 4
-     bc8:	8d e9       	ldi	r24, 0x9D	; 157
+     bc8:	83 ea       	ldi	r24, 0xA3	; 163
      bca:	90 e2       	ldi	r25, 0x20	; 32
      bcc:	04 d0       	rcall	.+8      	; 0xbd6 <TWI_MasterInit>
-TWID.SLAVE.CTRLA=0;  //slave disabled
      bce:	e0 e9       	ldi	r30, 0x90	; 144
      bd0:	f4 e0       	ldi	r31, 0x04	; 4
      bd2:	10 86       	std	Z+8, r1	; 0x08
      bd4:	08 95       	ret
 
 00000bd6 <TWI_MasterInit>:
-                    uint8_t address,
-                    uint8_t bytesToRead)
-{
-	bool twi_status = TWI_MasterWriteRead(twi, address, 0, 0, bytesToRead);
-	return twi_status;
-}
      bd6:	fc 01       	movw	r30, r24
      bd8:	60 83       	st	Z, r22
      bda:	71 83       	std	Z+1, r23	; 0x01
@@ -2044,65 +1793,31 @@ TWID.SLAVE.CTRLA=0;  //slave disabled
      c7e:	08 95       	ret
 
 00000c80 <TWI_MasterArbitrationLostBusErrorHandler>:
- *  Handles TWI responses to lost arbitration and bus error.
- *
- *  \param twi  The TWI_Master_t struct instance.
- */
-void TWI_MasterArbitrationLostBusErrorHandler(TWI_Master_t *twi)
-{
      c80:	fc 01       	movw	r30, r24
-	uint8_t currentStatus = twi->interface->MASTER.STATUS;
      c82:	a0 81       	ld	r26, Z
      c84:	b1 81       	ldd	r27, Z+1	; 0x01
      c86:	14 96       	adiw	r26, 0x04	; 4
      c88:	8c 91       	ld	r24, X
      c8a:	14 97       	sbiw	r26, 0x04	; 4
-
-	/* If bus error. */
-	if (currentStatus & TWI_MASTER_BUSERR_bm) 
      c8c:	82 ff       	sbrs	r24, 2
      c8e:	03 c0       	rjmp	.+6      	; 0xc96 <TWI_MasterArbitrationLostBusErrorHandler+0x16>
-	{
-		twi->result = TWIM_RESULT_BUS_ERROR;
      c90:	94 e0       	ldi	r25, 0x04	; 4
      c92:	90 8f       	std	Z+24, r25	; 0x18
      c94:	02 c0       	rjmp	.+4      	; 0xc9a <TWI_MasterArbitrationLostBusErrorHandler+0x1a>
-	}
-	/* If arbitration lost. */
-	else {
-		twi->result = TWIM_RESULT_ARBITRATION_LOST;
      c96:	93 e0       	ldi	r25, 0x03	; 3
      c98:	90 8f       	std	Z+24, r25	; 0x18
-	}
-
-	/* Clear interrupt flag. */
-	twi->interface->MASTER.STATUS = currentStatus | TWI_MASTER_ARBLOST_bm;
      c9a:	88 60       	ori	r24, 0x08	; 8
      c9c:	14 96       	adiw	r26, 0x04	; 4
      c9e:	8c 93       	st	X, r24
-
-	twi->status = TWIM_STATUS_READY;
      ca0:	17 8a       	std	Z+23, r1	; 0x17
      ca2:	08 95       	ret
 
 00000ca4 <TWI_MasterWriteHandler>:
- *  Handles TWI transactions (master write) and responses to (N)ACK.
- *
- *  \param twi The TWI_Master_t struct instance.
- */
-void TWI_MasterWriteHandler(TWI_Master_t *twi)
-{
      ca4:	cf 93       	push	r28
      ca6:	df 93       	push	r29
      ca8:	fc 01       	movw	r30, r24
-	/* Local variables used in if tests to avoid compiler warning. */
-	uint8_t bytesToWrite  = twi->bytesToWrite;
      caa:	93 89       	ldd	r25, Z+19	; 0x13
-	uint8_t bytesToRead   = twi->bytesToRead;
      cac:	24 89       	ldd	r18, Z+20	; 0x14
-
-	/* If NOT acknowledged (NACK) by slave cancel the transaction. */
-	if (twi->interface->MASTER.STATUS & TWI_MASTER_RXACK_bm) {
      cae:	a0 81       	ld	r26, Z
      cb0:	b1 81       	ldd	r27, Z+1	; 0x01
      cb2:	14 96       	adiw	r26, 0x04	; 4
@@ -2110,223 +1825,113 @@ void TWI_MasterWriteHandler(TWI_Master_t *twi)
      cb6:	14 97       	sbiw	r26, 0x04	; 4
      cb8:	84 ff       	sbrs	r24, 4
      cba:	07 c0       	rjmp	.+14     	; 0xcca <TWI_MasterWriteHandler+0x26>
-		twi->interface->MASTER.CTRLC = TWI_MASTER_CMD_STOP_gc;
      cbc:	83 e0       	ldi	r24, 0x03	; 3
      cbe:	13 96       	adiw	r26, 0x03	; 3
      cc0:	8c 93       	st	X, r24
-		twi->result = TWIM_RESULT_NACK_RECEIVED;
      cc2:	85 e0       	ldi	r24, 0x05	; 5
      cc4:	80 8f       	std	Z+24, r24	; 0x18
-		twi->status = TWIM_STATUS_READY;
      cc6:	17 8a       	std	Z+23, r1	; 0x17
      cc8:	1c c0       	rjmp	.+56     	; 0xd02 <TWI_MasterWriteHandler+0x5e>
-	}
-
-	/* If more bytes to write, send data. */
-	else if (twi->bytesWritten < bytesToWrite) {
      cca:	85 89       	ldd	r24, Z+21	; 0x15
      ccc:	89 17       	cp	r24, r25
      cce:	58 f4       	brcc	.+22     	; 0xce6 <TWI_MasterWriteHandler+0x42>
-		uint8_t data = twi->writeData[twi->bytesWritten];
      cd0:	85 89       	ldd	r24, Z+21	; 0x15
      cd2:	ef 01       	movw	r28, r30
      cd4:	c8 0f       	add	r28, r24
      cd6:	d1 1d       	adc	r29, r1
      cd8:	8b 81       	ldd	r24, Y+3	; 0x03
-		twi->interface->MASTER.DATA = data;
      cda:	17 96       	adiw	r26, 0x07	; 7
      cdc:	8c 93       	st	X, r24
-		++twi->bytesWritten;
      cde:	85 89       	ldd	r24, Z+21	; 0x15
      ce0:	8f 5f       	subi	r24, 0xFF	; 255
      ce2:	85 8b       	std	Z+21, r24	; 0x15
      ce4:	0e c0       	rjmp	.+28     	; 0xd02 <TWI_MasterWriteHandler+0x5e>
-	}
-
-	/* If bytes to read, send repeated START condition + Address +
-	 * 'R/_W = 1'
-	 */
-	else if (twi->bytesRead < bytesToRead) {
      ce6:	86 89       	ldd	r24, Z+22	; 0x16
      ce8:	82 17       	cp	r24, r18
      cea:	28 f4       	brcc	.+10     	; 0xcf6 <TWI_MasterWriteHandler+0x52>
-		uint8_t readAddress = twi->address | 0x01;
      cec:	82 81       	ldd	r24, Z+2	; 0x02
      cee:	81 60       	ori	r24, 0x01	; 1
-		twi->interface->MASTER.ADDR = readAddress;
      cf0:	16 96       	adiw	r26, 0x06	; 6
      cf2:	8c 93       	st	X, r24
      cf4:	06 c0       	rjmp	.+12     	; 0xd02 <TWI_MasterWriteHandler+0x5e>
-	}
-
-	/* If transaction finished, send STOP condition and set RESULT OK. */
-	else {
-		twi->interface->MASTER.CTRLC = TWI_MASTER_CMD_STOP_gc;
      cf6:	83 e0       	ldi	r24, 0x03	; 3
      cf8:	13 96       	adiw	r26, 0x03	; 3
      cfa:	8c 93       	st	X, r24
- *  \param twi     The TWI_Master_t struct instance.
- *  \param result  The result of the operation.
- */
-void TWI_MasterTransactionFinished(TWI_Master_t *twi, uint8_t result)
-{
-	twi->result = result;
      cfc:	81 e0       	ldi	r24, 0x01	; 1
      cfe:	80 8f       	std	Z+24, r24	; 0x18
-	twi->status = TWIM_STATUS_READY;
      d00:	17 8a       	std	Z+23, r1	; 0x17
-	/* If transaction finished, send STOP condition and set RESULT OK. */
-	else {
-		twi->interface->MASTER.CTRLC = TWI_MASTER_CMD_STOP_gc;
-		TWI_MasterTransactionFinished(twi, TWIM_RESULT_OK);
-	}
-}
      d02:	df 91       	pop	r29
      d04:	cf 91       	pop	r28
      d06:	08 95       	ret
 
 00000d08 <TWI_MasterReadHandler>:
- *  reading bytes from the TWI slave.
- *
- *  \param twi The TWI_Master_t struct instance.
- */
-void TWI_MasterReadHandler(TWI_Master_t *twi)
-{
      d08:	fc 01       	movw	r30, r24
-	/* Fetch data if bytes to be read. */
-	if (twi->bytesRead < TWIM_READ_BUFFER_SIZE) {
      d0a:	86 89       	ldd	r24, Z+22	; 0x16
      d0c:	88 30       	cpi	r24, 0x08	; 8
      d0e:	70 f4       	brcc	.+28     	; 0xd2c <TWI_MasterReadHandler+0x24>
-		uint8_t data = twi->interface->MASTER.DATA;
      d10:	a0 81       	ld	r26, Z
      d12:	b1 81       	ldd	r27, Z+1	; 0x01
      d14:	17 96       	adiw	r26, 0x07	; 7
      d16:	8c 91       	ld	r24, X
-		twi->readData[twi->bytesRead] = data;
      d18:	96 89       	ldd	r25, Z+22	; 0x16
      d1a:	df 01       	movw	r26, r30
      d1c:	a9 0f       	add	r26, r25
      d1e:	b1 1d       	adc	r27, r1
      d20:	1b 96       	adiw	r26, 0x0b	; 11
      d22:	8c 93       	st	X, r24
-		twi->bytesRead++;
      d24:	86 89       	ldd	r24, Z+22	; 0x16
      d26:	8f 5f       	subi	r24, 0xFF	; 255
      d28:	86 8b       	std	Z+22, r24	; 0x16
      d2a:	08 c0       	rjmp	.+16     	; 0xd3c <TWI_MasterReadHandler+0x34>
-	}
-
-	/* If buffer overflow, issue STOP and BUFFER_OVERFLOW condition. */
-	else {
-		twi->interface->MASTER.CTRLC = TWI_MASTER_CMD_STOP_gc;
      d2c:	a0 81       	ld	r26, Z
      d2e:	b1 81       	ldd	r27, Z+1	; 0x01
      d30:	83 e0       	ldi	r24, 0x03	; 3
      d32:	13 96       	adiw	r26, 0x03	; 3
      d34:	8c 93       	st	X, r24
- *  \param twi     The TWI_Master_t struct instance.
- *  \param result  The result of the operation.
- */
-void TWI_MasterTransactionFinished(TWI_Master_t *twi, uint8_t result)
-{
-	twi->result = result;
      d36:	82 e0       	ldi	r24, 0x02	; 2
      d38:	80 8f       	std	Z+24, r24	; 0x18
-	twi->status = TWIM_STATUS_READY;
      d3a:	17 8a       	std	Z+23, r1	; 0x17
-		twi->interface->MASTER.CTRLC = TWI_MASTER_CMD_STOP_gc;
-		TWI_MasterTransactionFinished(twi, TWIM_RESULT_BUFFER_OVERFLOW);
-	}
-
-	/* Local variable used in if test to avoid compiler warning. */
-	uint8_t bytesToRead = twi->bytesToRead;
      d3c:	94 89       	ldd	r25, Z+20	; 0x14
-
-	/* If more bytes to read, issue ACK and start a byte read. */
-	if (twi->bytesRead < bytesToRead) {
      d3e:	86 89       	ldd	r24, Z+22	; 0x16
      d40:	89 17       	cp	r24, r25
      d42:	30 f4       	brcc	.+12     	; 0xd50 <TWI_MasterReadHandler+0x48>
-		twi->interface->MASTER.CTRLC = TWI_MASTER_CMD_RECVTRANS_gc;
      d44:	01 90       	ld	r0, Z+
      d46:	f0 81       	ld	r31, Z
      d48:	e0 2d       	mov	r30, r0
      d4a:	82 e0       	ldi	r24, 0x02	; 2
      d4c:	83 83       	std	Z+3, r24	; 0x03
      d4e:	08 95       	ret
-	}
-
-	/* If transaction finished, issue NACK and STOP condition. */
-	else {
-		twi->interface->MASTER.CTRLC = TWI_MASTER_ACKACT_bm |
      d50:	a0 81       	ld	r26, Z
      d52:	b1 81       	ldd	r27, Z+1	; 0x01
      d54:	87 e0       	ldi	r24, 0x07	; 7
      d56:	13 96       	adiw	r26, 0x03	; 3
      d58:	8c 93       	st	X, r24
- *  \param twi     The TWI_Master_t struct instance.
- *  \param result  The result of the operation.
- */
-void TWI_MasterTransactionFinished(TWI_Master_t *twi, uint8_t result)
-{
-	twi->result = result;
      d5a:	81 e0       	ldi	r24, 0x01	; 1
      d5c:	80 8f       	std	Z+24, r24	; 0x18
-	twi->status = TWIM_STATUS_READY;
      d5e:	17 8a       	std	Z+23, r1	; 0x17
      d60:	08 95       	ret
 
 00000d62 <TWI_MasterInterruptHandler>:
- *
- *  \param twi  The TWI_Master_t struct instance.
- */
-void TWI_MasterInterruptHandler(TWI_Master_t *twi)
-{
-	uint8_t currentStatus = twi->interface->MASTER.STATUS;
      d62:	dc 01       	movw	r26, r24
      d64:	ed 91       	ld	r30, X+
      d66:	fc 91       	ld	r31, X
      d68:	24 81       	ldd	r18, Z+4	; 0x04
      d6a:	32 2f       	mov	r19, r18
      d6c:	3c 70       	andi	r19, 0x0C	; 12
-
-	/* If arbitration lost or bus error. */
-	if ((currentStatus & TWI_MASTER_ARBLOST_bm) ||
      d6e:	11 f0       	breq	.+4      	; 0xd74 <TWI_MasterInterruptHandler+0x12>
-	    (currentStatus & TWI_MASTER_BUSERR_bm)) {
-
-		TWI_MasterArbitrationLostBusErrorHandler(twi);
      d70:	87 cf       	rjmp	.-242    	; 0xc80 <TWI_MasterArbitrationLostBusErrorHandler>
      d72:	08 95       	ret
-	}
-
-	/* If master write interrupt. */
-	else if (currentStatus & TWI_MASTER_WIF_bm) {
      d74:	26 ff       	sbrs	r18, 6
      d76:	02 c0       	rjmp	.+4      	; 0xd7c <TWI_MasterInterruptHandler+0x1a>
-		TWI_MasterWriteHandler(twi);
      d78:	95 cf       	rjmp	.-214    	; 0xca4 <TWI_MasterWriteHandler>
      d7a:	08 95       	ret
-	}
-
-	/* If master read interrupt. */
-	else if (currentStatus & TWI_MASTER_RIF_bm) {
      d7c:	22 23       	and	r18, r18
      d7e:	14 f4       	brge	.+4      	; 0xd84 <TWI_MasterInterruptHandler+0x22>
-		TWI_MasterReadHandler(twi);
      d80:	c3 cf       	rjmp	.-122    	; 0xd08 <TWI_MasterReadHandler>
      d82:	08 95       	ret
- *  \param twi     The TWI_Master_t struct instance.
- *  \param result  The result of the operation.
- */
-void TWI_MasterTransactionFinished(TWI_Master_t *twi, uint8_t result)
-{
-	twi->result = result;
      d84:	26 e0       	ldi	r18, 0x06	; 6
      d86:	fc 01       	movw	r30, r24
      d88:	20 8f       	std	Z+24, r18	; 0x18
-	twi->status = TWIM_STATUS_READY;
      d8a:	17 8a       	std	Z+23, r1	; 0x17
      d8c:	08 95       	ret
 
@@ -2347,30 +1952,30 @@ int main (void)
     	D_read();
     	calculate(n[0],n[1],n[2],n[3],n[4],n[5],m[0],m[1]);
      d92:	0f 2e       	mov	r0, r31
-     d94:	fb eb       	ldi	r31, 0xBB	; 187
+     d94:	f1 ec       	ldi	r31, 0xC1	; 193
      d96:	6f 2e       	mov	r6, r31
      d98:	f0 e2       	ldi	r31, 0x20	; 32
      d9a:	7f 2e       	mov	r7, r31
      d9c:	f0 2d       	mov	r31, r0
      d9e:	0f 2e       	mov	r0, r31
-     da0:	fb e9       	ldi	r31, 0x9B	; 155
+     da0:	f1 ea       	ldi	r31, 0xA1	; 161
      da2:	8f 2e       	mov	r8, r31
      da4:	f0 e2       	ldi	r31, 0x20	; 32
      da6:	9f 2e       	mov	r9, r31
      da8:	f0 2d       	mov	r31, r0
      daa:	0f 2e       	mov	r0, r31
-     dac:	f9 e9       	ldi	r31, 0x99	; 153
+     dac:	ff e9       	ldi	r31, 0x9F	; 159
      dae:	4f 2e       	mov	r4, r31
      db0:	f0 e2       	ldi	r31, 0x20	; 32
      db2:	5f 2e       	mov	r5, r31
      db4:	f0 2d       	mov	r31, r0
      db6:	0f 2e       	mov	r0, r31
-     db8:	f7 e9       	ldi	r31, 0x97	; 151
+     db8:	fd e9       	ldi	r31, 0x9D	; 157
      dba:	2f 2e       	mov	r2, r31
      dbc:	f0 e2       	ldi	r31, 0x20	; 32
      dbe:	3f 2e       	mov	r3, r31
      dc0:	f0 2d       	mov	r31, r0
-     dc2:	cf eb       	ldi	r28, 0xBF	; 191
+     dc2:	c5 ec       	ldi	r28, 0xC5	; 197
      dc4:	d0 e2       	ldi	r29, 0x20	; 32
      
 
@@ -2396,11 +2001,11 @@ int main (void)
      de0:	f1 01       	movw	r30, r2
      de2:	20 81       	ld	r18, Z
      de4:	31 81       	ldd	r19, Z+1	; 0x01
-     de6:	e5 e9       	ldi	r30, 0x95	; 149
+     de6:	eb e9       	ldi	r30, 0x9B	; 155
      de8:	f0 e2       	ldi	r31, 0x20	; 32
      dea:	40 81       	ld	r20, Z
      dec:	51 81       	ldd	r21, Z+1	; 0x01
-     dee:	e3 e9       	ldi	r30, 0x93	; 147
+     dee:	e9 e9       	ldi	r30, 0x99	; 153
      df0:	f0 e2       	ldi	r31, 0x20	; 32
      df2:	60 81       	ld	r22, Z
      df4:	71 81       	ldd	r23, Z+1	; 0x01
@@ -2412,7 +2017,7 @@ int main (void)
      e00:	8f 93       	push	r24
      e02:	88 81       	ld	r24, Y
      e04:	8f 93       	push	r24
-     e06:	e1 e9       	ldi	r30, 0x91	; 145
+     e06:	e7 e9       	ldi	r30, 0x97	; 151
      e08:	f0 e2       	ldi	r31, 0x20	; 32
      e0a:	80 81       	ld	r24, Z
      e0c:	91 81       	ldd	r25, Z+1	; 0x01
@@ -2457,7 +2062,7 @@ ISR(TWID_TWIM_vect)
      e4a:	ef 93       	push	r30
      e4c:	ff 93       	push	r31
 	TWI_MasterInterruptHandler(&twiMaster);
-     e4e:	8d e9       	ldi	r24, 0x9D	; 157
+     e4e:	83 ea       	ldi	r24, 0xA3	; 163
      e50:	90 e2       	ldi	r25, 0x20	; 32
      e52:	87 df       	rcall	.-242    	; 0xd62 <TWI_MasterInterruptHandler>
 }

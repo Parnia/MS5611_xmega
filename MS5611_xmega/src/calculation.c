@@ -94,11 +94,11 @@ void calculate(unsigned int C1,unsigned int C2,unsigned int C3,unsigned int C4,u
 	 TEMP=TEMP*100;
 	 temperature=(long int)TEMP;
 	 //temperature=(long int)T2;
-	 printf2pc("temp: %ld",temperature);
+	 printf2pc("Temperature: %ld",temperature);
 	 
 	 usart_putchar(&USARTE0,'\r');
 // 	  printf2pc("c5: %d",C5);
 // 	   printf2pc("d2: %ld",D2);
-// 	    usart_putchar(&USARTE0,'\r');
+
 	
 }
