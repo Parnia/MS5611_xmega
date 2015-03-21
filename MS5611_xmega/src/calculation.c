@@ -97,8 +97,8 @@ void calculate(unsigned int C1,unsigned int C2,unsigned int C3,unsigned int C4,u
 	 printf2pc("Temperature: %ld",temperature);
 	 
 	 usart_putchar(&USARTE0,'\r');
-// 	  printf2pc("c5: %d",C5);
-// 	   printf2pc("d2: %ld",D2);
+
+//test!
 
 	
 }
